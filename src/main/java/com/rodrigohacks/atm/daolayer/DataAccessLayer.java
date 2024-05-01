@@ -61,6 +61,7 @@ public class DataAccessLayer {
         Map<String, Object>  role = dataAccessLayer.getRoleDescription("gina1961", "12345");
         System.out.println("User Role Description: " + role.get("role_description"));
         System.out.println("User id: " + role.get("user_id"));
+        dataAccessLayer.searchAccount(12);
         System.out.println(user.getUserLogin());
         System.out.println(user2.getUserLogin());
         System.out.println(user3.getUserLogin());
@@ -430,50 +431,71 @@ public class DataAccessLayer {
 
     public Map<String, Object> getRoleDescription(String userLogin, String userLoginPin){
             // Check if user login pin is 5 characters long
-    if (userLoginPin.length() != 5) {
-        System.out.println("Failed to log in. User login pin must be 5 characters long.");
-        return null;
-    }
-
-    // Check if user login pin consists of digits
-    if (!userLoginPin.matches("\\d+")) {
-        System.out.println("Failed to log in. User login pin must consist of digits.");
-        return null;
-    }
-
-
-    // Query to retrieve role description and user ID
-    String selectRoleQuery = MySQLQueryStrings.GET_USER_ROLE_BY_LOGIN_AND_PIN;
-
-    try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
-         PreparedStatement stmtSelectRole = conn.prepareStatement(selectRoleQuery)) {
-
-        // Set parameters for the query
-        stmtSelectRole.setString(1, userLogin);
-        stmtSelectRole.setString(2, userLoginPin);
-
-        // Execute the query
-        ResultSet rs = stmtSelectRole.executeQuery();
-
-        // Check if a result is found
-        if (rs.next()) {
-            Map<String, Object> result = new HashMap<>();
-            result.put("role_description", rs.getString("role_description"));
-            result.put("user_id", rs.getInt("id"));
-            return result;
-        } else {
-            System.out.println("Failed to log in. Invalid login credentials.");
+        if (userLoginPin.length() != 5) {
+            System.out.println("Failed to log in. User login pin must be 5 characters long.");
             return null;
         }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return null;
+        // Check if user login pin consists of digits
+        if (!userLoginPin.matches("\\d+")) {
+            System.out.println("Failed to log in. User login pin must consist of digits.");
+            return null;
+        }
+
+
+        // Query to retrieve role description and user ID
+        String selectRoleQuery = MySQLQueryStrings.GET_USER_ROLE_BY_LOGIN_AND_PIN;
+
+        try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
+             PreparedStatement stmtSelectRole = conn.prepareStatement(selectRoleQuery)) {
+
+            // Set parameters for the query
+            stmtSelectRole.setString(1, userLogin);
+            stmtSelectRole.setString(2, userLoginPin);
+
+            // Execute the query
+            ResultSet rs = stmtSelectRole.executeQuery();
+
+            // Check if a result is found
+            if (rs.next()) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("role_description", rs.getString("role_description"));
+                result.put("user_id", rs.getInt("id"));
+                return result;
+            } else {
+                System.out.println("Failed to log in. Invalid login credentials.");
+                return null;
+            }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    public void searchAccount(int accountId) {
+        String searchAccountQuery = MySQLQueryStrings.SEARCH_USER_BY_ACCOUNT_ID;
+
+        try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
+             PreparedStatement stmtSearchAccount = conn.prepareStatement(searchAccountQuery)) {
+
+            // Set parameter for the query
+            stmtSearchAccount.setInt(1, accountId);
+
+            // Execute the query
+            ResultSet rs = stmtSearchAccount.executeQuery();
+
+            // Check if an account is found
+            if (rs.next()) {
+                String holderName = rs.getString("holder");
+                int accountIdFound = rs.getInt("id");
+                System.out.println("The account information is:");
+                System.out.println("Account #" + accountIdFound);
+                System.out.println("Holder: " + holderName);
+            } else {
+                System.out.println("No account found with the specified ID.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-
-
-
-    }
-
 }

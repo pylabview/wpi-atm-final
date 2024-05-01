@@ -94,6 +94,11 @@ public class MySQLQueryStrings {
                              "JOIN roles ON users.id = roles.user_id " +
                              "WHERE users.user_login = ? AND users.user_login_pin = ?";
 
+    public static String SEARCH_USER_BY_ACCOUNT_ID =    "SELECT users.holder, accounts.id " +
+                                                        "FROM users " +
+                                                        "JOIN accounts ON users.id = accounts.user_id " +
+                                                        "WHERE accounts.id = ?";
+
     public static void main(String[] args) {
         ATMUser atmUser = new ATMUser(1,
                 "Gina",
@@ -124,6 +129,8 @@ public class MySQLQueryStrings {
         System.out.println(MySQLQueryStrings.GET_USER_BY_ACCOUNT_ID);
         System.out.println(MySQLQueryStrings.GET_USER_BY_LOGIN);
         System.out.println(MySQLQueryStrings.GET_USER_BY_ID);
+        System.out.println(MySQLQueryStrings.GET_USER_ROLE_BY_LOGIN_AND_PIN);
+        System.out.println(MySQLQueryStrings.SEARCH_USER_BY_ACCOUNT_ID);
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertQuery"));
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertAccountQuery"));
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertRoleQuery"));
