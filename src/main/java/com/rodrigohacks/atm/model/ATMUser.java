@@ -1,10 +1,12 @@
 package com.rodrigohacks.atm.model;
 
 public class ATMUser {
-    private final int id;
+    private int id;
     private final String holder, roleDescription, userLogin, userLoginPin;
-    private final int accountId, active, userType;
+    private final int active, userType;
     private final double balance;
+    private int accountId;
+
 
     public ATMUser(int id,
                    String holder,
@@ -26,6 +28,13 @@ public class ATMUser {
         this.userType = userType;
     }
 
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public int getUserType() {
         return userType;
     }

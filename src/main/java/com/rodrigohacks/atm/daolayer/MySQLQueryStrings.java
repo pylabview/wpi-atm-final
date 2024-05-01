@@ -21,7 +21,7 @@ public class MySQLQueryStrings {
         HashMap<String, String> newUserQueryStrings = new HashMap<>();
         newUserQueryStrings.put("insertQuery", """ 
                 INSERT INTO users (user_type, holder, user_login_pin, user_login)
-                VALUES (%d, "%s", "%s", "%s");""".formatted(atmUser.getUserType(), atmUser.getHolder(), atmUser.getUserLogin(), atmUser.getUserLoginPin()));
+                VALUES (%d, "%s", "%s", "%s");""".formatted(atmUser.getUserType(), atmUser.getHolder(), atmUser.getUserLoginPin(), atmUser.getUserLogin()));
         newUserQueryStrings.put("insertAccountQuery", """ 
                 INSERT INTO accounts (user_id, balance, active)
                 VALUES (%d, %.2f, %d);""".formatted(atmUser.getId(), atmUser.getBalance(), atmUser.getActive()));
