@@ -51,11 +51,12 @@ public class DataAccessLayer {
 //        int newUserId = dataAccessLayer.addUserToDatabase(atmUser);
 //        dataAccessLayer.deleteUserFromDatabase(newUserId);
 //        dataAccessLayer.updateUserFromDatabase(atmUserUpdated);
-        System.out.println(dataAccessLayer.getBalanceFromDatabase(17));
+        System.out.println(dataAccessLayer.getBalanceFromUser(17));
         ATMUser user = dataAccessLayer.getUserByAccountId(12);
         ATMUser user2 = dataAccessLayer.getUserById(17);
         ATMUser user3 = dataAccessLayer.getUserByLogin("gina1961");
-        dataAccessLayer.withdrawFromDatabase(17, 100);
+        dataAccessLayer.withdrawFromUser(17, 10);
+        dataAccessLayer.depositToUserAccount(17, 10);
         System.out.println(user.getUserLogin());
         System.out.println(user2.getUserLogin());
         System.out.println(user3.getUserLogin());
@@ -299,7 +300,7 @@ public class DataAccessLayer {
         return updateOkay;
     }
 
-    public double getBalanceFromDatabase(int userId) {
+    public double getBalanceFromUser(int userId) {
         double balance = 0.0;
         // Query to set the current timestamp
         String setTimestampQuery = "SET @now = CURRENT_TIMESTAMP()";
@@ -341,11 +342,11 @@ public class DataAccessLayer {
         return balance;
     }
 
-    public void withdrawFromDatabase(int userId, double amount) {
+    public void withdrawFromUser(int userId, double amount) {
         // Query to update user's balance for withdrawal
          HashMap<String, String> queries = MySQLQueryStrings.WITHDRAW_FROM_ACCOUNT();
 
-        double currentBalance = getBalanceFromDatabase(userId);
+        double currentBalance = getBalanceFromUser(userId);
         try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
              PreparedStatement stmtUpdateBalance = conn.prepareStatement(queries.get("updateWithdrawBalanceQuery"));
              PreparedStatement stmtInsertWithdrawalTransaction = conn.prepareStatement(queries.get("insertWithdrawalTransactionQuery"));
@@ -385,11 +386,41 @@ public class DataAccessLayer {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public void depositToUserAccount(int userId, double amount) {
+               // Query to update user's balance for deposit
+        HashMap<String, String> queries = MySQLQueryStrings.DEPOSIT_TO_ACCOUNT();
+        double currentBalance = getBalanceFromUser(userId);
+        try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
+             PreparedStatement stmtUpdateBalance = conn.prepareStatement(queries.get("updateDepositBalanceQuery"));
+             PreparedStatement stmtInsertDepositTransaction = conn.prepareStatement(queries.get("insertDepositTransactionQuery"));
+             PreparedStatement stmtLinkDepositTransaction = conn.prepareStatement(queries.get("linkDepositTransactionQuery"))) {
 
+            // Deposit funds into the user's account
+            stmtUpdateBalance.setDouble(1, amount);
+            stmtUpdateBalance.setInt(2, userId);
+            stmtUpdateBalance.executeUpdate();
 
+            // Record the deposit transaction
+            stmtInsertDepositTransaction.setString(1, "Deposit");
+            stmtInsertDepositTransaction.executeUpdate();
 
+            // Link the deposit transaction to the user
+            stmtLinkDepositTransaction.setInt(1, userId);
+            stmtLinkDepositTransaction.executeUpdate();
 
+            // Display deposit details
+            System.out.println("*********************************");
+            System.out.println("Cash Deposited Successfully.");
+            System.out.println("Account #" + userId);
+            System.out.println("Date: " + "01/29/2024"); // Assuming a static date for this example
+            System.out.println("Deposited: " + amount);
+            System.out.println("Balance: " + (currentBalance + amount));
+            System.out.println("*********************************");
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
