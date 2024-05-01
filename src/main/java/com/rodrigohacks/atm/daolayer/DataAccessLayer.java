@@ -55,6 +55,7 @@ public class DataAccessLayer {
         ATMUser user = dataAccessLayer.getUserByAccountId(12);
         ATMUser user2 = dataAccessLayer.getUserById(17);
         ATMUser user3 = dataAccessLayer.getUserByLogin("gina1961");
+        dataAccessLayer.withdrawFromDatabase(17, 100);
         System.out.println(user.getUserLogin());
         System.out.println(user2.getUserLogin());
         System.out.println(user3.getUserLogin());
@@ -341,8 +342,49 @@ public class DataAccessLayer {
     }
 
     public void withdrawFromDatabase(int userId, double amount) {
+        // Query to update user's balance for withdrawal
+         HashMap<String, String> queries = MySQLQueryStrings.WITHDRAW_FROM_ACCOUNT();
 
+        double currentBalance = getBalanceFromDatabase(userId);
+        try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
+             PreparedStatement stmtUpdateBalance = conn.prepareStatement(queries.get("updateWithdrawBalanceQuery"));
+             PreparedStatement stmtInsertWithdrawalTransaction = conn.prepareStatement(queries.get("insertWithdrawalTransactionQuery"));
+             PreparedStatement stmtLinkWithdrawalTransaction = conn.prepareStatement(queries.get("linkWithdrawalTransactionQuery"))) {
 
+            if (currentBalance < amount) {
+                System.out.println("Insufficient funds for withdrawal.");
+                return;
+            }
+
+            // Withdraw amount from the balance
+            stmtUpdateBalance.setDouble(1, amount);
+            stmtUpdateBalance.setInt(2, userId);
+            stmtUpdateBalance.executeUpdate();
+
+            // Record the withdrawal transaction
+            stmtInsertWithdrawalTransaction.setString(1, "Withdraw");
+            stmtInsertWithdrawalTransaction.executeUpdate();
+
+            // Link the withdrawal transaction to the user
+            stmtLinkWithdrawalTransaction.setInt(1, userId);
+            stmtLinkWithdrawalTransaction.executeUpdate();
+
+            // Display withdrawal details
+            System.out.println("*********************************");
+            System.out.println("Account #" + userId);
+            System.out.println("Date: " + "01/29/2024"); // Assuming a static date for this example
+            System.out.println("Withdrawn: " + amount);
+            System.out.println("Balance: " + (currentBalance - amount));
+            System.out.println("Cash Successfully Withdrawn");
+            System.out.println("Account #" + userId);
+            System.out.println("Date: " + "01/29/2024"); // Assuming a static date for this example
+            System.out.println("Withdrawn: " + amount);
+            System.out.println("Balance: " + (currentBalance - amount));
+            System.out.println("*********************************");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
 
