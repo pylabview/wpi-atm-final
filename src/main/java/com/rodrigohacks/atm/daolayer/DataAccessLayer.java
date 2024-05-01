@@ -52,13 +52,19 @@ public class DataAccessLayer {
 //        dataAccessLayer.deleteUserFromDatabase(newUserId);
 //        dataAccessLayer.updateUserFromDatabase(atmUserUpdated);
         System.out.println(dataAccessLayer.getBalanceFromDatabase(17));
+        ATMUser user = dataAccessLayer.getUserByAccountId(12);
+        ATMUser user2 = dataAccessLayer.getUserById(17);
+        ATMUser user3 = dataAccessLayer.getUserByLogin("gina1961");
+        System.out.println(user.getUserLogin());
+        System.out.println(user2.getUserLogin());
+        System.out.println(user3.getUserLogin());
         System.out.println(dataAccessLayer.dbUrl);
         System.out.println(dataAccessLayer.dbUser);
         System.out.println(dataAccessLayer.dbPassword);
         List<ATMUser> userList = dataAccessLayer.getUsersFromDatabase();
 
-        for (ATMUser user : userList) {
-            System.out.println(user.getHolder());
+        for (ATMUser u : userList) {
+            System.out.println(u.getHolder());
         }
     }
 
@@ -90,9 +96,98 @@ public class DataAccessLayer {
         return userList;
     }
 
+    public ATMUser getUserByAccountId(int accId) {
+        String q1 = MySQLQueryStrings.GET_USER_BY_ACCOUNT_ID;
+        ATMUser atmUser = null;
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            PreparedStatement stmtSelect = conn.prepareStatement(q1)){
+            stmtSelect.setInt(1, accId);
 
-    public int addUserToDatabase(ATMUser atmUser) {
-        String q1 = MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertQuery");
+            // Execute the SELECT statement
+            ResultSet rs = stmtSelect.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String holder = rs.getString("holder");
+                String roleDescription = rs.getString("role_description");
+                String userLogin = rs.getString("user_login");
+                int currentBalance = rs.getInt("balance");
+                int active = rs.getInt("active");
+                String userLoginPin = rs.getString("user_login_pin");
+                int accountId = rs.getInt("accountId");
+                int userType = rs.getInt("userType");
+
+                atmUser = new ATMUser(id, holder, roleDescription, userLogin, userLoginPin, currentBalance, active, accountId, userType);
+            }
+            return atmUser;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return atmUser;
+    }
+
+    public ATMUser getUserById(int userId) {
+        String q1 = MySQLQueryStrings.GET_USER_BY_ID;
+        ATMUser atmUser = null;
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            PreparedStatement stmtSelect = conn.prepareStatement(q1)){
+            stmtSelect.setInt(1, userId);
+
+            // Execute the SELECT statement
+            ResultSet rs = stmtSelect.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String holder = rs.getString("holder");
+                String roleDescription = rs.getString("role_description");
+                String userLogin = rs.getString("user_login");
+                int currentBalance = rs.getInt("balance");
+                int active = rs.getInt("active");
+                String userLoginPin = rs.getString("user_login_pin");
+                int accountId = rs.getInt("accountId");
+                int userType = rs.getInt("userType");
+
+                atmUser = new ATMUser(id, holder, roleDescription, userLogin, userLoginPin, currentBalance, active, accountId, userType);
+            }
+            return atmUser;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return atmUser;
+    }
+
+    public ATMUser getUserByLogin(String uLogin) {
+        String q1 = MySQLQueryStrings.GET_USER_BY_LOGIN;
+        ATMUser atmUser = null;
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            PreparedStatement stmtSelect = conn.prepareStatement(q1)){
+            stmtSelect.setString(1, uLogin);
+
+            // Execute the SELECT statement
+            ResultSet rs = stmtSelect.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String holder = rs.getString("holder");
+                String roleDescription = rs.getString("role_description");
+                String userLogin = rs.getString("user_login");
+                int currentBalance = rs.getInt("balance");
+                int active = rs.getInt("active");
+                String userLoginPin = rs.getString("user_login_pin");
+                int accountId = rs.getInt("accountId");
+                int userType = rs.getInt("userType");
+
+                atmUser = new ATMUser(id, holder, roleDescription, userLogin, userLoginPin, currentBalance, active, accountId, userType);
+            }
+            return atmUser;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return atmUser;
+    }
+
+    public int addUserToDatabase(ATMUser newATMUser) {
+        String q1 = MySQLQueryStrings.ADD_USER_TO_DATABASE(newATMUser).get("insertQuery");
 
         try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
              Statement stmt = conn.createStatement()) {
@@ -102,14 +197,14 @@ public class DataAccessLayer {
             // Get the last inserted user ID
             ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
             if (rs.next()) {
-                atmUser.setId(rs.getInt(1));
+                newATMUser.setId(rs.getInt(1));
             }
-            String q2 = MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertRoleQuery");
+            String q2 = MySQLQueryStrings.ADD_USER_TO_DATABASE(newATMUser).get("insertRoleQuery");
             // Execute SQL query to insert user role
             stmt.executeUpdate(q2);
 
             // Execute SQL query to insert user account
-            String q3 = MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertAccountQuery");
+            String q3 = MySQLQueryStrings.ADD_USER_TO_DATABASE(newATMUser).get("insertAccountQuery");
             // Create a PreparedStatement with the INSERT query and specify that you want to retrieve generated keys
             PreparedStatement stmt1 = conn.prepareStatement(q3, Statement.RETURN_GENERATED_KEYS);
 
@@ -121,8 +216,8 @@ public class DataAccessLayer {
                 // Retrieve the generated keys
                 ResultSet rs1 = stmt1.getGeneratedKeys();
                 if (rs1.next()) {
-                    atmUser.setAccountId(rs1.getInt(1)); // Retrieve the generated account ID
-                    System.out.println("\"Account Successfully Created – the account number assigned is: " + atmUser.getAccountId());
+                    newATMUser.setAccountId(rs1.getInt(1)); // Retrieve the generated account ID
+                    System.out.println("\"Account Successfully Created – the account number assigned is: " + newATMUser.getAccountId());
                 } else {
                     System.out.println("Failed to retrieve the generated account ID.");
                 }
@@ -130,7 +225,7 @@ public class DataAccessLayer {
                 System.out.println("Failed to create a new account.");
             }
 
-            return atmUser.getId();
+            return newATMUser.getId();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -243,6 +338,16 @@ public class DataAccessLayer {
             e.printStackTrace();
         }
         return balance;
+    }
+
+    public void withdrawFromDatabase(int userId, double amount) {
+
+
+
+
+
+
+
 
     }
 }

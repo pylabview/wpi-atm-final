@@ -70,21 +70,36 @@ public class MySQLQueryStrings {
             "JOIN accounts ON users.id = accounts.user_id " +
             "WHERE accounts.id = ?";
 
-    public static String GET_USER_BANALANCE_FROM_DATABASE = "SELECT accounts.balance, accounts.id AS account_number, users.holder, @now AS time_stamp " +
-                                                             "FROM users " +
-                                                             "JOIN accounts ON accounts.user_id = users.id " +
-                                                             "WHERE users.id = ?";
+
+    public static String GET_USER_BY_ACCOUNT_ID = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
+                                                   "from users " +
+                                                   "join accounts " +
+                                                   "on  users.id = accounts.user_id join roles on users.id = roles.user_id " +
+                                                   "where accounts.id = ?";
+
+    public static String GET_USER_BY_LOGIN = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
+                                             "from users " +
+                                             "join accounts " +
+                                             "on  users.id = accounts.user_id join roles on users.id = roles.user_id "  +
+                                             "where users.user_login = ?";
+
+    public static String GET_USER_BY_ID = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
+                                         "from users " +
+                                         "join accounts " +
+                                         "on  users.id = accounts.user_id join roles on users.id = roles.user_id "  +
+                                         "where users.id = ?";
 
     public static void main(String[] args) {
         ATMUser atmUser = new ATMUser(1,
-                "Rodrigo",
+                "Gina",
                 "Customer",
-                "rodrigohacks",
-                "1234",
-                1000.23,
+                "gina1961",
+                "12345",
+                4000.23,
                 1,
-                8,
+                -1,
                 0);
+
         System.out.println(MySQLQueryStrings.GET_USERS_FROM_DATABASE);
         HashMap<String, String> userQuery = MySQLQueryStrings.UPDATE_USER_TO_DATABASE();
         System.out.println(userQuery.get("updateUserQuery"));
@@ -101,6 +116,9 @@ public class MySQLQueryStrings {
         System.out.println(MySQLQueryStrings.SEARCH_ACCOUNT_FROM_DATABASE);
         System.out.println(MySQLQueryStrings.GET_USERS_FROM_DATABASE);
         System.out.println(MySQLQueryStrings.GET_BALANCE_FROM_DATABASE);
+        System.out.println(MySQLQueryStrings.GET_USER_BY_ACCOUNT_ID);
+        System.out.println(MySQLQueryStrings.GET_USER_BY_LOGIN);
+        System.out.println(MySQLQueryStrings.GET_USER_BY_ID);
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertQuery"));
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertAccountQuery"));
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertRoleQuery"));
