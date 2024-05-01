@@ -5,7 +5,7 @@ import com.rodrigohacks.atm.model.ATMUser;
 import java.util.HashMap;
 
 public class MySQLQueryStrings {
-    public static final String GET_USERS_FROM_DATABASE = "select users.id, users.user_type as userType, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId  from users " +
+    public static final String GET_USERS_FROM_DATABASE = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType  from users " +
             "join accounts on  users.id = accounts.user_id " +
             "join roles on users.id = roles.user_id ";
 

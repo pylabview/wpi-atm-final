@@ -5,7 +5,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,6 +22,30 @@ public class DataAccessLayer {
         this.dbUser = dotenv.get("DB_USER");
         this.dbPassword = dotenv.get("DB_PASSWORD");
         this.resultSet = null;
+    }
+
+    public static void main(String[] args) {
+        ATMUser atmUser = new ATMUser(1,
+                "Gina",
+                "Customer",
+                "gina1961",
+                "12345",
+                4000.23,
+                1,
+                -1,
+                0);
+
+        DataAccessLayer dataAccessLayer = new DataAccessLayer();
+        int newUserId = dataAccessLayer.addUserToDatabase(atmUser);
+        dataAccessLayer.deleteUserFromDatabase(newUserId);
+        System.out.println(dataAccessLayer.dbUrl);
+        System.out.println(dataAccessLayer.dbUser);
+        System.out.println(dataAccessLayer.dbPassword);
+        List<ATMUser> userList = dataAccessLayer.getUsersFromDatabase();
+
+        for (ATMUser user : userList) {
+            System.out.println(user.getHolder());
+        }
     }
 
     public List<ATMUser> getUsersFromDatabase() {
@@ -44,7 +67,7 @@ public class DataAccessLayer {
                 int accountId = rs.getInt("accountId");
                 int userType = rs.getInt("userType");
 
-                userList.add(new ATMUser(id, holder, roleDescription, userLogin, userLoginPin, currentBalance, active, accountId,userType));
+                userList.add(new ATMUser(id, holder, roleDescription, userLogin, userLoginPin, currentBalance, active, accountId, userType));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,25 +76,18 @@ public class DataAccessLayer {
         return userList;
     }
 
-    public boolean AddUserToDatabase(ATMUser atmUser) {
 
-
-        return false;
-    }
-
-
-    public boolean addUserToDatabase(ATMUser atmUser) {
+    public int addUserToDatabase(ATMUser atmUser) {
         String q1 = MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertQuery");
         System.out.println(q1);
 
 
-    try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
+        try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
              Statement stmt = conn.createStatement()) {
-//
-//            // Execute SQL query to insert new user
+
+            // Execute SQL query to insert new user
             stmt.executeUpdate(q1);
-//
-//            // Get the last inserted user ID
+            // Get the last inserted user ID
             ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
             if (rs.next()) {
                 atmUser.setId(rs.getInt(1));
@@ -102,40 +118,37 @@ public class DataAccessLayer {
                 System.out.println("Failed to create a new account.");
             }
 
-            return true;
+            return atmUser.getId();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
-
-
+        return -1;
 
 
     }
 
+    public boolean deleteUserFromDatabase(int userId) {
+    String q1 = MySQLQueryStrings.DELETE_USER_FROM_DATABASE;
+    boolean deletedOK = false;
 
+    try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
+         PreparedStatement stmt = conn.prepareStatement(q1)) {
 
-    public static void main(String[] args) {
-        ATMUser atmUser = new ATMUser(1,
-                "Rod",
-                "Customer",
-                "rodrigohacks1967",
-                "1234",
-                1000.23,
-                1,
-                -1,
-                0);
+        stmt.setInt(1, userId);
+        int affectedRows = stmt.executeUpdate();
 
-        DataAccessLayer dataAccessLayer = new DataAccessLayer();
-        dataAccessLayer.addUserToDatabase(atmUser);
-        System.out.println(dataAccessLayer.dbUrl);
-        System.out.println(dataAccessLayer.dbUser);
-        System.out.println(dataAccessLayer.dbPassword);
-        List<ATMUser> userList = dataAccessLayer.getUsersFromDatabase();
-
-        for (ATMUser user : userList) {
-            System.out.println(user.getHolder());
+        if (affectedRows == 0) {
+            System.out.println("User with ID " + userId + " does not exist.");
+        } else {
+            System.out.println("User with ID " + userId + " deleted successfully.");
+            System.out.println("Account Deleted Successfully");
+            deletedOK = true;
         }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
+    return deletedOK;
+    }
 }
