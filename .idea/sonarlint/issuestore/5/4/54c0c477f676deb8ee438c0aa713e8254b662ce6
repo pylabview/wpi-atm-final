@@ -1,0 +1,55 @@
+
+”
+java:S1192'"LDefine a constant instead of duplicating this literal "FROM users " 3 times.(ß‡ù½ÿÿÿÿÿ8Ü¤á‹ó1J$964b9922-521e-4f6f-963b-ec26d412c85c
+µ
+java:S1319"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(Ãí¦œÿÿÿÿÿ8İ¤á‹ó1J$64a1777d-510a-4dfa-8872-2c829c761419
+µ
+java:S1319"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(Ó¯ş¯úÿÿÿÿ8İ¤á‹ó1J$060dc4b5-d8d8-468d-999e-ed652fc84310
+°
+java:S1319,"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(‚èÄç8İ¤á‹ó1J$a757ffc0-e0ae-4e2f-a5dc-659c7958df2c
+µ
+java:S13195"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(ŠÖö²ùÿÿÿÿ8İ¤á‹ó1J$e2e2d558-c900-42ce-98af-869f445a7917
+­
+java:S1104$"eMake DELETE_USER_FROM_DATABASE a static final constant or non-public and provide accessors if needed.(§Èõûÿÿÿÿ8Ş¤á‹ó1J$f6cc45c6-38d3-413b-b8a5-fc0103501f4e
+­
+java:S1104&"eMake GET_BALANCE_FROM_DATABASE a static final constant or non-public and provide accessors if needed.(–‘‰¥ùÿÿÿÿ8Ş¤á‹ó1J$2e6d722b-85cd-40a8-a392-3a4fc39e4b27
+ª
+java:S1104?"gMake GET_USER_ROLE_FROM_DATABASE a static final constant or non-public and provide accessors if needed.(ÕÛÈ†8Ş¤á‹ó1J$a6c530de-d6f7-42eb-86ac-d77327742a43
+°
+java:S1104D"hMake SEARCH_ACCOUNT_FROM_DATABASE a static final constant or non-public and provide accessors if needed.(ÒÎ¬úÿÿÿÿ8Ş¤á‹ó1J$77322667-6b8c-49f3-aeda-f534a987d5fa
+‡
+java:S1444$"?Make this "public static DELETE_USER_FROM_DATABASE" field final(§Èõûÿÿÿÿ8ß¤á‹ó1J$f6da3c49-897d-430b-bf41-f9bfce9258ba
+‡
+java:S1444&"?Make this "public static GET_BALANCE_FROM_DATABASE" field final(–‘‰¥ùÿÿÿÿ8ß¤á‹ó1J$b5c13d4e-8f4f-4081-9b59-77a4a3b1c822
+„
+java:S1444?"AMake this "public static GET_USER_ROLE_FROM_DATABASE" field final(ÕÛÈ†8ß¤á‹ó1J$17635570-cd2d-4b72-b5ee-8e063d08b327
+Š
+java:S1444D"BMake this "public static SEARCH_ACCOUNT_FROM_DATABASE" field final(ÒÎ¬úÿÿÿÿ8ß¤á‹ó1J$ef0a05cd-f549-423e-bcf6-440674265d55
+¬
+java:S3008$"dRename this field "DELETE_USER_FROM_DATABASE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(§Èõûÿÿÿÿ8ã¤á‹ó1J$e5a850b4-2071-43b3-8080-879d9788436d
+¬
+java:S3008&"dRename this field "GET_BALANCE_FROM_DATABASE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(–‘‰¥ùÿÿÿÿ8ã¤á‹ó1J$58377ef7-2e07-48f6-bbd5-265a80200479
+©
+java:S3008?"fRename this field "GET_USER_ROLE_FROM_DATABASE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÕÛÈ†8ã¤á‹ó1J$9fd006d5-4455-4e35-9505-3278bef86df0
+¯
+java:S3008D"gRename this field "SEARCH_ACCOUNT_FROM_DATABASE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÒÎ¬úÿÿÿÿ8ã¤á‹ó1J$041aed1a-b51e-4b60-8b52-e19051394005
+•	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ãí¦œÿÿÿÿÿ8å¤á‹ó1J$7c0fc897-c213-49db-8062-bb93b8529cbb
+•	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ó¯ş¯úÿÿÿÿ8æ¤á‹ó1J$d34cd04c-5f92-494e-b284-719935d83c42
+	java:S100,"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚èÄç8è¤á‹ó1J$1569d8fe-ae34-4ffc-9ed3-ec04f56fd1ea
+•	java:S1005"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŠÖö²ùÿÿÿÿ8è¤á‹ó1J$f4f29730-fb37-4f63-b6e1-ab557041d5ca
+m	java:S106L"+Replace this use of System.out by a logger.(›ŒÏ›8ê¤á‹ó1J$07cc3ccd-72f5-470e-8a5e-402855aee058
+m	java:S106M"+Replace this use of System.out by a logger.(áæäæ8ê¤á‹ó1J$71d691aa-248c-4785-b765-0717fed73597
+l	java:S106N"+Replace this use of System.out by a logger.(ê“ØP8ë¤á‹ó1J$93a1bb41-0698-4410-96a2-c55a16556293
+l	java:S106O"+Replace this use of System.out by a logger.(ĞŞºD8ë¤á‹ó1J$18bc84dd-c744-4b97-ac5d-0ae5b02a3785
+r	java:S106P"+Replace this use of System.out by a logger.(¦íõñùÿÿÿÿ8ë¤á‹ó1J$eb604dba-9e2e-43a8-8618-b47984f13133
+l	java:S106Q"+Replace this use of System.out by a logger.(­Çğ8ë¤á‹ó1J$0427148b-01ff-4cdb-9f91-421dee74ab2c
+m	java:S106R"+Replace this use of System.out by a logger.(ÿ…ü£8ë¤á‹ó1J$f2d8bafe-6a23-46c6-9c96-a6ef2ea8f0e5
+r	java:S106S"+Replace this use of System.out by a logger.(Âıìİşÿÿÿÿ8ë¤á‹ó1J$e4cc6f6b-6142-403d-b7db-dd0bd97b2ed0
+r	java:S106T"+Replace this use of System.out by a logger.(•õûÿÿÿÿ8ì¤á‹ó1J$b4e5bfa8-04c5-4dbd-8f1e-2a2baa2af734
+r	java:S106U"+Replace this use of System.out by a logger.(ºå×ˆûÿÿÿÿ8ì¤á‹ó1J$c17e0af6-17ff-4edf-ae15-30a9aa9087ee
+r	java:S106V"+Replace this use of System.out by a logger.(óşóÕùÿÿÿÿ8ì¤á‹ó1J$008cecea-4cd0-4926-9659-fed05ab76084
+m	java:S106W"+Replace this use of System.out by a logger.(ãÉ¢‘8ì¤á‹ó1J$ec5c67fe-465e-479f-94b4-e6957dd9117e
+r	java:S106X"+Replace this use of System.out by a logger.(êÀùÆşÿÿÿÿ8ì¤á‹ó1J$6719bfb5-6008-4a95-bea6-8aedcf98ab98
+r	java:S106Y"+Replace this use of System.out by a logger.(˜öƒÿÿÿÿÿ8ì¤á‹ó1J$905b9fec-1fbe-4487-8608-c3589e96f5c5
+m	java:S106Z"+Replace this use of System.out by a logger.(à·Îò8í¤á‹ó1J$87e26174-414e-4292-8701-764cd258b5b5
+m	java:S106["+Replace this use of System.out by a logger.(¢‚Ê…8í¤á‹ó1J$7abb53a9-efc9-4cef-b13a-4f935378e690

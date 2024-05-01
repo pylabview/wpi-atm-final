@@ -1,0 +1,17 @@
+
+«
+java:S1845="hRename method "addUserToDatabase" to prevent any misunderstanding/clash with method "AddUserToDatabase".(½¤µ•8¬«¾Šó1J$396537b4-d86e-4a59-b119-2063394d8d6c
+‹
+java:S1659"CDeclare "dbUser" and all following declarations on a separate line.(¯Ý¼ˆýÿÿÿÿ8óú½Šó1J$e694cf32-e9b4-4357-bd1b-6e2e9a3ac4d3
+	java:S1006"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ôû×£8³«¾Šó1J$9d4c0313-4a96-4bc7-83ff-da018f3eaa66
+q
+java:S11726".Remove this unused method parameter "atmUser".(ôû×£8ø›¿Šó1J$67dad254-3365-4716-b061-80ec5362cb65
+~
+java:S1854>";Remove this useless assignment to local variable "balance".(¿Š†ë8øú½Šó1J$e9f83718-fb2a-4e0f-a598-e13c442b404a
+o
+java:S1481>",Remove this unused "balance" local variable.(¿Š†ë8øú½Šó1J$928a8ae6-89e2-4f10-a6ae-3d512f284a08
+ƒ	java:S125?"<This block of commented-out lines of code should be removed.(ÆÖÛÄþÿÿÿÿ8ùú½Šó1J$ae2a035b-f498-4f76-b73a-ba4c008c3c95
+l	java:S106L"+Replace this use of System.out by a logger.(¿—®8úú½Šó1J$f069031b-0c4c-440d-8401-a1d8d3030722
+r	java:S106M"+Replace this use of System.out by a logger.(º°õ²ÿÿÿÿÿ8úú½Šó1J$15ad4200-17c9-477d-aced-f7976872770f
+m	java:S106N"+Replace this use of System.out by a logger.(°“£8úú½Šó1J$dfd1de68-1c9c-44df-bb4d-7d1ac8eecaa0
+m	java:S106R"+Replace this use of System.out by a logger.(Î’ÑÚ8ûú½Šó1J$28f0e0e8-5197-4a62-88e1-413c560802f1
