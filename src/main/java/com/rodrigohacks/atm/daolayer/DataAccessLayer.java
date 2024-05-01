@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * DataAccessLayer class provides methods to interact with the database.
@@ -57,6 +58,9 @@ public class DataAccessLayer {
         ATMUser user3 = dataAccessLayer.getUserByLogin("gina1961");
         dataAccessLayer.withdrawFromUser(17, 10);
         dataAccessLayer.depositToUserAccount(17, 10);
+        Map<String, Object>  role = dataAccessLayer.getRoleDescription("gina1961", "12345");
+        System.out.println("User Role Description: " + role.get("role_description"));
+        System.out.println("User id: " + role.get("user_id"));
         System.out.println(user.getUserLogin());
         System.out.println(user2.getUserLogin());
         System.out.println(user3.getUserLogin());
@@ -423,4 +427,53 @@ public class DataAccessLayer {
             e.printStackTrace();
         }
     }
+
+    public Map<String, Object> getRoleDescription(String userLogin, String userLoginPin){
+            // Check if user login pin is 5 characters long
+    if (userLoginPin.length() != 5) {
+        System.out.println("Failed to log in. User login pin must be 5 characters long.");
+        return null;
+    }
+
+    // Check if user login pin consists of digits
+    if (!userLoginPin.matches("\\d+")) {
+        System.out.println("Failed to log in. User login pin must consist of digits.");
+        return null;
+    }
+
+
+    // Query to retrieve role description and user ID
+    String selectRoleQuery = MySQLQueryStrings.GET_USER_ROLE_BY_LOGIN_AND_PIN;
+
+    try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
+         PreparedStatement stmtSelectRole = conn.prepareStatement(selectRoleQuery)) {
+
+        // Set parameters for the query
+        stmtSelectRole.setString(1, userLogin);
+        stmtSelectRole.setString(2, userLoginPin);
+
+        // Execute the query
+        ResultSet rs = stmtSelectRole.executeQuery();
+
+        // Check if a result is found
+        if (rs.next()) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("role_description", rs.getString("role_description"));
+            result.put("user_id", rs.getInt("id"));
+            return result;
+        } else {
+            System.out.println("Failed to log in. Invalid login credentials.");
+            return null;
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return null;
+    }
+
+
+
+
+    }
+
 }

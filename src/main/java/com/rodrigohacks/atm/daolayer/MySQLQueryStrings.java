@@ -89,6 +89,11 @@ public class MySQLQueryStrings {
                                          "on  users.id = accounts.user_id join roles on users.id = roles.user_id "  +
                                          "where users.id = ?";
 
+    public static String GET_USER_ROLE_BY_LOGIN_AND_PIN = "SELECT roles.role_description, users.id " +
+                             "FROM users " +
+                             "JOIN roles ON users.id = roles.user_id " +
+                             "WHERE users.user_login = ? AND users.user_login_pin = ?";
+
     public static void main(String[] args) {
         ATMUser atmUser = new ATMUser(1,
                 "Gina",
