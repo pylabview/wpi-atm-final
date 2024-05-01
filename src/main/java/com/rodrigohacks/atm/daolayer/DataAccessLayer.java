@@ -41,8 +41,9 @@ public class DataAccessLayer {
                 int active = rs.getInt("active");
                 String userLoginPin = rs.getString("user_login_pin");
                 int accountId = rs.getInt("accountId");
+                int userType = rs.getInt("user_type");
 
-                userList.add(new ATMUser(id, holder, roleDescription, userLogin, userLoginPin, currentBalance, active, accountId));
+                userList.add(new ATMUser(id, holder, roleDescription, userLogin, userLoginPin, currentBalance, active, accountId,userType));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,7 +61,7 @@ public class DataAccessLayer {
 
     public boolean addUserToDatabase(ATMUser atmUser) {
         double balance = atmUser.getBalance();
-//        int accountId = atmUser.getAccountId();
+        int accountId = atmUser.getAccountId();
 
         return false;
 
@@ -72,6 +73,16 @@ public class DataAccessLayer {
 
 
     public static void main(String[] args) {
+        ATMUser atmUser = new ATMUser(1,
+                "Rodrigo",
+                "Customer",
+                "rodrigohacks",
+                "1234",
+                1000.23,
+                1,
+                8,
+                0);
+
         DataAccessLayer dataAccessLayer = new DataAccessLayer();
         System.out.println(dataAccessLayer.dbUrl);
         System.out.println(dataAccessLayer.dbUser);

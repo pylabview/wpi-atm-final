@@ -5,7 +5,7 @@ import com.rodrigohacks.atm.model.ATMUser;
 import java.util.HashMap;
 
 public class MySQLQueryStrings {
-    public static final String GET_USERS_FROM_DATABASE = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId  from users " +
+    public static final String GET_USERS_FROM_DATABASE = "select users.id, users.user_type as userType, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId  from users " +
             "join accounts on  users.id = accounts.user_id " +
             "join roles on users.id = roles.user_id ";
 
@@ -21,7 +21,7 @@ public class MySQLQueryStrings {
         HashMap<String, String> newUserQueryStrings = new HashMap<>();
         newUserQueryStrings.put("insertQuery", """ 
                 INSERT INTO users (user_type, holder, user_login_pin, user_login)
-                VALUES (0, "%s", "%s", "%s");""".formatted(atmUser.getHolder(), atmUser.getUserLogin(), atmUser.getUserLoginPin()));
+                VALUES (%d, "%s", "%s", "%s");""".formatted(atmUser.getUserType(), atmUser.getHolder(), atmUser.getUserLogin(), atmUser.getUserLoginPin()));
         newUserQueryStrings.put("insertAccountQuery", """ 
                 INSERT INTO accounts (user_id, balance, active)
                 VALUES (%d, %.2f, %d);""".formatted(atmUser.getId(), atmUser.getBalance(), atmUser.getActive()));
@@ -71,7 +71,16 @@ public class MySQLQueryStrings {
             "WHERE accounts.id = ?";
 
     public static void main(String[] args) {
-        ATMUser atmUser = new ATMUser(1, "Rodrigo", "Customer", "rodrigohacks", "1234", 1000.23, 1, 8);
+        ATMUser atmUser = new ATMUser(1,
+                "Rodrigo",
+                "Customer",
+                "rodrigohacks",
+                "1234",
+                1000.23,
+                1,
+                8,
+                0);
+        System.out.println(MySQLQueryStrings.GET_USERS_FROM_DATABASE);
         HashMap<String, String> userQuery = MySQLQueryStrings.UPDATE_USER_TO_DATABASE();
         System.out.println(userQuery.get("updateUserQuery"));
         System.out.println(userQuery.get("updateAccountQuery"));
