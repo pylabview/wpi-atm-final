@@ -15,7 +15,9 @@ import java.util.Map;
  * It uses dotenv library to load environment variables for database connection.
  */
 public class DataAccessLayer {
-    String dbUrl, dbUser, dbPassword;
+    String dbUrl;
+    String dbUser;
+    String dbPassword;
 
     public DataAccessLayer() {
         Dotenv dotenv = Dotenv.load();
