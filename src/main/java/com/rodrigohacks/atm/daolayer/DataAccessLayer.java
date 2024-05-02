@@ -27,7 +27,9 @@ public class DataAccessLayer {
         this.dbPassword = dotenv.get("DB_PASSWORD");
     }
 
-
+    /**
+     * @return
+     */
     public List<ATMUser> getUsersFromDatabase() {
         List<ATMUser> userList = new ArrayList<>();
         String query = MySQLQueryStrings.GET_USERS_FROM_DATABASE;
@@ -56,6 +58,9 @@ public class DataAccessLayer {
         return userList;
     }
 
+    /**
+     * @param atmUser
+     */
     public List<ATMTransaction> getTransactionsFromDatabase() {
 
         List<ATMTransaction> atmTransactions = new ArrayList<>();
@@ -84,6 +89,10 @@ public class DataAccessLayer {
         return atmTransactions;
     }
 
+    /**
+     * @param accId
+     * @return
+     */
     public ATMUser getUserByAccountId(int accId) {
         String q1 = MySQLQueryStrings.GET_USER_BY_ACCOUNT_ID;
         ATMUser atmUser = null;
@@ -114,6 +123,10 @@ public class DataAccessLayer {
         return atmUser;
     }
 
+    /**
+     * @param userId
+     * @return
+     */
     public ATMUser getUserById(int userId) {
         String q1 = MySQLQueryStrings.GET_USER_BY_ID;
         ATMUser atmUser = null;
@@ -144,7 +157,10 @@ public class DataAccessLayer {
         return atmUser;
     }
 
-
+    /**
+     * @param uId
+     * @return
+     */
     public ATMTransaction getTransactionByUserId(int uId) {
         String q1 = MySQLQueryStrings.TRANSACTION_REPORT_BY_USER_ID;
         ATMTransaction atmTransactionm = null;
@@ -175,7 +191,10 @@ public class DataAccessLayer {
         return atmTransactionm;
     }
 
-
+    /**
+     * @param uLogin
+     * @return
+     */
     public ATMUser getUserByLogin(String uLogin) {
         String q1 = MySQLQueryStrings.GET_USER_BY_LOGIN;
         ATMUser atmUser = null;
@@ -206,6 +225,10 @@ public class DataAccessLayer {
         return atmUser;
     }
 
+    /**
+     * @param newATMUser
+     * @return
+     */
     public int addUserToDatabase(ATMUser newATMUser) {
         String q1 = MySQLQueryStrings.ADD_USER_TO_DATABASE(newATMUser).get("insertQuery");
 
@@ -254,6 +277,10 @@ public class DataAccessLayer {
 
     }
 
+    /**
+     * @param userId
+     * @return
+     */
     public boolean deleteUserFromDatabase(int userId) {
         String q1 = MySQLQueryStrings.DELETE_USER_FROM_DATABASE;
         boolean deletedOK = false;
@@ -279,6 +306,10 @@ public class DataAccessLayer {
         return deletedOK;
     }
 
+    /**
+     * @param atmUser
+     * @return
+     */
     public boolean updateUserFromDatabase(ATMUser atmUser) {
         HashMap<String, String> q1 = MySQLQueryStrings.UPDATE_USER_TO_DATABASE();
         boolean updateOkay = false;
@@ -318,6 +349,10 @@ public class DataAccessLayer {
         return updateOkay;
     }
 
+    /**
+     * @param atmUser
+     * @return
+     */
     public double getBalanceFromUser(int userId) {
         double balance = 0.0;
         // Query to set the current timestamp
@@ -360,6 +395,10 @@ public class DataAccessLayer {
         return balance;
     }
 
+    /**
+     * @param userId
+     * @param amount
+     */
     public void withdrawFromUser(int userId, double amount) {
         // Query to update user's balance for withdrawal
         HashMap<String, String> queries = MySQLQueryStrings.WITHDRAW_FROM_ACCOUNT();
@@ -407,6 +446,10 @@ public class DataAccessLayer {
         }
     }
 
+    /**
+     * @param userId
+     * @param amount
+     */
     public void depositToUserAccount(int userId, double amount) {
         // Query to update user's balance for deposit
         HashMap<String, String> queries = MySQLQueryStrings.DEPOSIT_TO_ACCOUNT();
@@ -444,6 +487,10 @@ public class DataAccessLayer {
         }
     }
 
+    /**
+     * @param userId
+     * @param amount
+     */
     public Map<String, Object> getRoleDescription(String userLogin, String userLoginPin) {
         // Check if user login pin is 5 characters long
         if (userLoginPin.length() != 5) {
@@ -488,6 +535,9 @@ public class DataAccessLayer {
         }
     }
 
+    /**
+     * @param userId
+     */
     public void searchAccount(int accountId) {
         String searchAccountQuery = MySQLQueryStrings.SEARCH_USER_BY_ACCOUNT_ID;
 

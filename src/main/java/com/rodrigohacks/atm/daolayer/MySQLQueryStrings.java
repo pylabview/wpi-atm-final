@@ -93,6 +93,9 @@ public class MySQLQueryStrings {
         return newUserQueryStrings;
     }
 
+    /**
+     * @return
+     */
     public static HashMap<String, String> WITHDRAW_FROM_ACCOUNT() {
         HashMap<String, String> withdrawFromAccount = new HashMap<>();
         withdrawFromAccount.put("updateWithdrawBalanceQuery", "UPDATE accounts SET balance = balance - ? WHERE user_id = ?");
@@ -102,11 +105,15 @@ public class MySQLQueryStrings {
         return withdrawFromAccount;
     }
 
+    /**
+     * @return
+     */
     public static HashMap<String, String> DEPOSIT_TO_ACCOUNT() {
         HashMap<String, String> depositToAccount = new HashMap<>();
         depositToAccount.put("updateDepositBalanceQuery", "UPDATE accounts SET balance = balance + ? WHERE user_id = ?");
         depositToAccount.put("insertDepositTransactionQuery", "INSERT INTO transactions (type,amount) VALUES (?,?)");
         depositToAccount.put("linkDepositTransactionQuery", "INSERT INTO users_transactions (transaction_id, user_id) VALUES (LAST_INSERT_ID(), ?)");
+
 
         return depositToAccount;
     }

@@ -5,11 +5,24 @@ import com.rodrigohacks.atm.daolayer.DataAccessLayer;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * This class represents the presentation layer of the ATM system.
+ * It interacts with the user and the data access layer to perform various operations.
+ *
+ * @author Your Name
+ * @version 1.0
+ */
 public class ATMPresentationLayer {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     int currentUserId = 0;
     int adminUserId = 0;
 
+    /**
+     * Starts the application by displaying the login screen and verifying the login and pin code.
+     * If the login and pin code are valid, it displays the appropriate menu based on the user's role.
+     *
+     * @param scanner The scanner object used to read user input.
+     */
     public void startApplication() {
         Scanner scanner = new Scanner(System.in);
 
@@ -41,6 +54,9 @@ public class ATMPresentationLayer {
         }
     }
 
+    /**
+     * Displays the admin menu.
+     */
     private void displayCustomerMenu() {
         Scanner scanner = new Scanner(System.in);
         int option;
@@ -83,6 +99,9 @@ public class ATMPresentationLayer {
         dataAccessLayer.getBalanceFromUser(currentUserId);
     }
 
+    /**
+     *
+     */
     private void depositCash() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the cash amount to deposit: ");
@@ -90,6 +109,7 @@ public class ATMPresentationLayer {
         // Call depositToAccount() method with the specified amount
         dataAccessLayer.depositToUserAccount(currentUserId, amount); // You need to provide userId
     }
+
 
     private void withdrawCash() {
         Scanner scanner = new Scanner(System.in);
@@ -137,6 +157,7 @@ public class ATMPresentationLayer {
         } while (option != 6);
 
     }
+
 
     private void searchForAccount() {
         Scanner scanner = new Scanner(System.in);
