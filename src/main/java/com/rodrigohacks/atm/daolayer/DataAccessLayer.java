@@ -57,7 +57,7 @@ public class DataAccessLayer {
         ATMUser user2 = dataAccessLayer.getUserById(17);
         ATMUser user3 = dataAccessLayer.getUserByLogin("gina1961");
         dataAccessLayer.withdrawFromUser(17, 10);
-        dataAccessLayer.depositToUserAccount(17, 10);
+        dataAccessLayer.depositToUserAccount(17, 200);
         Map<String, Object>  role = dataAccessLayer.getRoleDescription("gina1961", "12345");
         System.out.println("User Role Description: " + role.get("role_description"));
         System.out.println("User id: " + role.get("user_id"));
@@ -369,6 +369,7 @@ public class DataAccessLayer {
 
             // Record the withdrawal transaction
             stmtInsertWithdrawalTransaction.setString(1, "Withdraw");
+            stmtInsertWithdrawalTransaction.setDouble(2, amount);
             stmtInsertWithdrawalTransaction.executeUpdate();
 
             // Link the withdrawal transaction to the user
@@ -409,6 +410,7 @@ public class DataAccessLayer {
 
             // Record the deposit transaction
             stmtInsertDepositTransaction.setString(1, "Deposit");
+            stmtInsertDepositTransaction.setDouble(2, amount);
             stmtInsertDepositTransaction.executeUpdate();
 
             // Link the deposit transaction to the user

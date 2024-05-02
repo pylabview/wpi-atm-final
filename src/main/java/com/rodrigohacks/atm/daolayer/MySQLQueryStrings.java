@@ -44,7 +44,7 @@ public class MySQLQueryStrings {
     public static HashMap<String, String> WITHDRAW_FROM_ACCOUNT() {
         HashMap<String, String> withdrawFromAccount = new HashMap<>();
         withdrawFromAccount.put("updateWithdrawBalanceQuery", "UPDATE accounts SET balance = balance - ? WHERE user_id = ?");
-        withdrawFromAccount.put("insertWithdrawalTransactionQuery", "INSERT INTO transactions (type) VALUES (?)");
+        withdrawFromAccount.put("insertWithdrawalTransactionQuery", "INSERT INTO transactions (type,amount) VALUES (?,?)");
         withdrawFromAccount.put("linkWithdrawalTransactionQuery", "INSERT INTO users_transactions (transaction_id, user_id) VALUES (LAST_INSERT_ID(), ?)");
 
         return withdrawFromAccount;
@@ -53,7 +53,7 @@ public class MySQLQueryStrings {
     public static HashMap<String, String> DEPOSIT_TO_ACCOUNT() {
         HashMap<String, String> depositToAccount = new HashMap<>();
         depositToAccount.put("updateDepositBalanceQuery", "UPDATE accounts SET balance = balance + ? WHERE user_id = ?");
-        depositToAccount.put("insertDepositTransactionQuery", "INSERT INTO transactions (type) VALUES (?)");
+        depositToAccount.put("insertDepositTransactionQuery", "INSERT INTO transactions (type,amount) VALUES (?,?)");
         depositToAccount.put("linkDepositTransactionQuery", "INSERT INTO users_transactions (transaction_id, user_id) VALUES (LAST_INSERT_ID(), ?)");
 
         return depositToAccount;
@@ -98,6 +98,22 @@ public class MySQLQueryStrings {
                                                         "FROM users " +
                                                         "JOIN accounts ON users.id = accounts.user_id " +
                                                         "WHERE accounts.id = ?";
+    public static String TRANSACTION_REPORT = """
+                                                SELECT users.id as userId,users.user_type as userType, roles.role_description as roleDescription, users.holder, transactions.id as trasactionId, transactions.created_at as transactionDate, transactions.type as transactionType, transactions.amount, accounts.id as accountId
+                                                FROM users_transactions
+                                                JOIN users ON users_transactions.user_id = users.id
+                                                JOIN transactions ON users_transactions.transaction_id = transactions.id
+                                                JOIN roles ON users.id = roles.user_id
+                                                JOIN accounts ON users.id = accounts.user_id""";
+
+    public static String TRANSACTION_REPORT_BY_USER_ID = """
+                                               SELECT users.id as userId,users.user_type as userType, roles.role_description as roleDescription, users.holder, transactions.id as trasactionId, transactions.created_at as transactionDate, transactions.type as transactionType, transactions.amount, accounts.id as accountId
+                                               FROM users_transactions
+                                               JOIN users ON users_transactions.user_id = users.id
+                                               JOIN transactions ON users_transactions.transaction_id = transactions.id
+                                               JOIN roles ON users.id = roles.user_id
+                                               JOIN accounts ON users.id = accounts.user_id
+                                               WHERE users.id = 17;""";
 
     public static void main(String[] args) {
         ATMUser atmUser = new ATMUser(1,
@@ -134,6 +150,8 @@ public class MySQLQueryStrings {
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertQuery"));
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertAccountQuery"));
         System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertRoleQuery"));
+        System.out.println(MySQLQueryStrings.TRANSACTION_REPORT);
+        System.out.println(MySQLQueryStrings.TRANSACTION_REPORT_BY_USER_ID);
 
 
     }
