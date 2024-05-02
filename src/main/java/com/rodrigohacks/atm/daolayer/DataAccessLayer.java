@@ -16,7 +16,6 @@ import java.util.Map;
  */
 public class DataAccessLayer {
     String dbUrl, dbUser, dbPassword;
-    ResultSet resultSet;
 
     public DataAccessLayer() {
         Dotenv dotenv = Dotenv.load();
@@ -24,64 +23,63 @@ public class DataAccessLayer {
         this.dbUrl = dotenv.get("DB_URL");
         this.dbUser = dotenv.get("DB_USER");
         this.dbPassword = dotenv.get("DB_PASSWORD");
-        this.resultSet = null;
     }
 
-    public static void main(String[] args) {
-        ATMUser atmUser = new ATMUser(1,
-                "Gina",
-                "Customer",
-                "gina1961",
-                "12345",
-                4000.23,
-                1,
-                -1,
-                0);
-
-        ATMUser atmUserUpdated = new ATMUser(17,
-                "Gina Gumey",
-                "Customer",
-                "Gina1961",
-                "12345",
-                4000.23,
-                1,
-                -1,
-                0);
-
-
-        DataAccessLayer dataAccessLayer = new DataAccessLayer();
-//        int newUserId = dataAccessLayer.addUserToDatabase(atmUser);
-//        dataAccessLayer.deleteUserFromDatabase(newUserId);
-//        dataAccessLayer.updateUserFromDatabase(atmUserUpdated);
-        System.out.println(dataAccessLayer.getBalanceFromUser(17));
-        ATMUser user = dataAccessLayer.getUserByAccountId(12);
-        ATMUser user2 = dataAccessLayer.getUserById(17);
-        ATMUser user3 = dataAccessLayer.getUserByLogin("gina1961");
-        dataAccessLayer.withdrawFromUser(17, 10);
-        dataAccessLayer.depositToUserAccount(17, 200);
-        Map<String, Object>  role = dataAccessLayer.getRoleDescription("gina1961", "12345");
-        System.out.println("User Role Description: " + role.get("role_description"));
-        System.out.println("User id: " + role.get("user_id"));
-        dataAccessLayer.searchAccount(12);
-        System.out.println(user.getUserLogin());
-        System.out.println(user2.getUserLogin());
-        System.out.println(user3.getUserLogin());
-        System.out.println(dataAccessLayer.dbUrl);
-        System.out.println(dataAccessLayer.dbUser);
-        System.out.println(dataAccessLayer.dbPassword);
-
-        List<ATMUser> userList = dataAccessLayer.getUsersFromDatabase();
-        List<ATMTransaction> atmTransactions = dataAccessLayer.getTransactionsFromDatabase();
-
-        for (ATMUser u : userList) {
-            System.out.println(u.getHolder());
-        }
-        for (ATMTransaction t : atmTransactions) {
-            System.out.println(t.getHolder());
-            System.out.println(t.getTransactionDate());
-        }
-        System.out.println(dataAccessLayer.getTransactionByUserId(17).getHolder());
-    }
+//    public static void main(String[] args) {
+//        ATMUser atmUser = new ATMUser(1,
+//                "Gina",
+//                "Customer",
+//                "gina1961",
+//                "12345",
+//                4000.23,
+//                1,
+//                -1,
+//                0);
+//
+//        ATMUser atmUserUpdated = new ATMUser(17,
+//                "Gina Gumey",
+//                "Customer",
+//                "Gina1961",
+//                "12345",
+//                4000.23,
+//                1,
+//                -1,
+//                0);
+//
+//
+//        DataAccessLayer dataAccessLayer = new DataAccessLayer();
+////        int newUserId = dataAccessLayer.addUserToDatabase(atmUser);
+////        dataAccessLayer.deleteUserFromDatabase(newUserId);
+////        dataAccessLayer.updateUserFromDatabase(atmUserUpdated);
+//        System.out.println(dataAccessLayer.getBalanceFromUser(17));
+//        ATMUser user = dataAccessLayer.getUserByAccountId(12);
+//        ATMUser user2 = dataAccessLayer.getUserById(17);
+//        ATMUser user3 = dataAccessLayer.getUserByLogin("gina1961");
+//        dataAccessLayer.withdrawFromUser(17, 10);
+//        dataAccessLayer.depositToUserAccount(17, 200);
+//        Map<String, Object>  role = dataAccessLayer.getRoleDescription("gina1961", "12345");
+//        System.out.println("User Role Description: " + role.get("role_description"));
+//        System.out.println("User id: " + role.get("user_id"));
+//        dataAccessLayer.searchAccount(12);
+//        System.out.println(user.getUserLogin());
+//        System.out.println(user2.getUserLogin());
+//        System.out.println(user3.getUserLogin());
+//        System.out.println(dataAccessLayer.dbUrl);
+//        System.out.println(dataAccessLayer.dbUser);
+//        System.out.println(dataAccessLayer.dbPassword);
+//
+//        List<ATMUser> userList = dataAccessLayer.getUsersFromDatabase();
+//        List<ATMTransaction> atmTransactions = dataAccessLayer.getTransactionsFromDatabase();
+//
+//        for (ATMUser u : userList) {
+//            System.out.println(u.getHolder());
+//        }
+//        for (ATMTransaction t : atmTransactions) {
+//            System.out.println(t.getHolder());
+//            System.out.println(t.getTransactionDate());
+//        }
+//        System.out.println(dataAccessLayer.getTransactionByUserId(17).getHolder());
+//    }
 
     public List<ATMUser> getUsersFromDatabase() {
         List<ATMUser> userList = new ArrayList<>();
@@ -542,6 +540,7 @@ public class DataAccessLayer {
                 return null;
             }
         }
+
     public void searchAccount(int accountId) {
         String searchAccountQuery = MySQLQueryStrings.SEARCH_USER_BY_ACCOUNT_ID;
 
