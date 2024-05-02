@@ -113,7 +113,7 @@ public class MySQLQueryStrings {
                                                JOIN transactions ON users_transactions.transaction_id = transactions.id
                                                JOIN roles ON users.id = roles.user_id
                                                JOIN accounts ON users.id = accounts.user_id
-                                               WHERE users.id = 17;""";
+                                               WHERE users.id = ?;""";
 
     public static void main(String[] args) {
         ATMUser atmUser = new ATMUser(1,

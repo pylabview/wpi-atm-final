@@ -3,6 +3,7 @@ package com.rodrigohacks.atm.model;
 import java.sql.Timestamp;
 
 public class ATMTransaction {
+    private final String roleDescription;
     private int userId;
     private int userType;
     private String holder;
@@ -20,7 +21,8 @@ public class ATMTransaction {
             Timestamp transactionDate,
             String transactionType,
             int accountId,
-            double amount )
+            double amount,
+            String roleDescription)
     {
         this.userId = userId;
         this.userType = userType;
@@ -30,6 +32,7 @@ public class ATMTransaction {
         this.transactionType = transactionType;
         this.accountId = accountId;
         this.transactionAmount = amount;
+        this.roleDescription = roleDescription;
     }
 
     public int getUserId() {
@@ -62,5 +65,9 @@ public class ATMTransaction {
 
     public double getTransactionAmount() {
         return transactionAmount;
+    }
+
+    public String getRoleDescription() {
+        return roleDescription;
     }
 }

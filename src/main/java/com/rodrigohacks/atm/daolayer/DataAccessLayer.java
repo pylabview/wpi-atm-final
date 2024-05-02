@@ -1,5 +1,6 @@
 package com.rodrigohacks.atm.daolayer;
 
+import com.rodrigohacks.atm.model.ATMTransaction;
 import com.rodrigohacks.atm.model.ATMUser;
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -68,11 +69,18 @@ public class DataAccessLayer {
         System.out.println(dataAccessLayer.dbUrl);
         System.out.println(dataAccessLayer.dbUser);
         System.out.println(dataAccessLayer.dbPassword);
+
         List<ATMUser> userList = dataAccessLayer.getUsersFromDatabase();
+        List<ATMTransaction> atmTransactions = dataAccessLayer.getTransactionsFromDatabase();
 
         for (ATMUser u : userList) {
             System.out.println(u.getHolder());
         }
+        for (ATMTransaction t : atmTransactions) {
+            System.out.println(t.getHolder());
+            System.out.println(t.getTransactionDate());
+        }
+        System.out.println(dataAccessLayer.getTransactionByUserId(17).getHolder());
     }
 
     public List<ATMUser> getUsersFromDatabase() {
@@ -101,6 +109,34 @@ public class DataAccessLayer {
         }
 
         return userList;
+    }
+
+    public List<ATMTransaction> getTransactionsFromDatabase() {
+
+        List<ATMTransaction> atmTransactions = new ArrayList<>();
+        String query = MySQLQueryStrings.TRANSACTION_REPORT;
+
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int userId = rs.getInt("userId");
+                int userType = rs.getInt("userType");
+                String holder = rs.getString("holder");
+                String roleDescription = rs.getString("roleDescription");
+                int transactionId = rs.getInt("trasactionId");
+                Timestamp transactionDate = rs.getTimestamp("transactionDate");
+                String transactionType = rs.getString("transactionType");
+                int accountId = rs.getInt("accountId");
+                double amount = rs.getDouble("amount");
+
+                atmTransactions.add(new ATMTransaction(userId, userType, holder,   transactionId, transactionDate, transactionType, accountId, amount, roleDescription));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return atmTransactions;
     }
 
     public ATMUser getUserByAccountId(int accId) {
@@ -155,13 +191,45 @@ public class DataAccessLayer {
 
                 atmUser = new ATMUser(id, holder, roleDescription, userLogin, userLoginPin, currentBalance, active, accountId, userType);
             }
-            return atmUser;
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return atmUser;
     }
+
+
+    public ATMTransaction getTransactionByUserId(int uId) {
+        String q1 = MySQLQueryStrings.TRANSACTION_REPORT_BY_USER_ID;
+        ATMTransaction atmTransactionm = null;
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            PreparedStatement stmtSelect = conn.prepareStatement(q1)){
+            stmtSelect.setInt(1, uId);
+
+            // Execute the SELECT statement
+            ResultSet rs = stmtSelect.executeQuery();
+            while (rs.next()) {
+                int userId = rs.getInt("userId");
+                int userType = rs.getInt("userType");
+                String holder = rs.getString("holder");
+                String roleDescription = rs.getString("roleDescription");
+                int transactionId = rs.getInt("trasactionId");
+                Timestamp transactionDate = rs.getTimestamp("transactionDate");
+                String transactionType = rs.getString("transactionType");
+                int accountId = rs.getInt("accountId");
+                double amount = rs.getDouble("amount");
+
+                atmTransactionm = new ATMTransaction(userId, userType, holder,   transactionId, transactionDate, transactionType, accountId, amount, roleDescription);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return atmTransactionm;
+    }
+
 
     public ATMUser getUserByLogin(String uLogin) {
         String q1 = MySQLQueryStrings.GET_USER_BY_LOGIN;
@@ -500,4 +568,5 @@ public class DataAccessLayer {
             e.printStackTrace();
         }
     }
+
 }
