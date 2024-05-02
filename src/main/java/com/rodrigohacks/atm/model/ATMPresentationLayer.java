@@ -185,13 +185,14 @@ public class ATMPresentationLayer {
         // Input account number to delete
         System.out.print("Enter the user account number to delete: ");
         int userAccountNumber = scanner.nextInt();
+        ATMUser atmU = dataAccessLayer.getUserByAccountId(userAccountNumber);
         System.out.println("You wish to delete the account held by John Doe. If this information is correct, please\n" +
                             "re-enter the account number: " + userAccountNumber);
         int reenterUserAccountNumber = scanner.nextInt();
         // Perform the necessary actions to delete the account
         // Call the appropriate method from UserDetails class to delete the account
         if(userAccountNumber==reenterUserAccountNumber){
-            dataAccessLayer.deleteUserFromDatabase(userAccountNumber);
+            dataAccessLayer.deleteUserFromDatabase(atmU.getId());
         }else{
             System.out.println("Account # "+ userAccountNumber +" deletion is aborted");
         }

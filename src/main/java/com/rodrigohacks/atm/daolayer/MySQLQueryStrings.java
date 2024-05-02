@@ -115,45 +115,5 @@ public class MySQLQueryStrings {
                                                JOIN accounts ON users.id = accounts.user_id
                                                WHERE users.id = ?;""";
 
-//    public static void main(String[] args) {
-//        ATMUser atmUser = new ATMUser(1,
-//                "Gina",
-//                "Customer",
-//                "gina1961",
-//                "12345",
-//                4000.23,
-//                1,
-//                -1,
-//                0);
-//
-//        System.out.println(MySQLQueryStrings.GET_USERS_FROM_DATABASE);
-//        HashMap<String, String> userQuery = MySQLQueryStrings.UPDATE_USER_TO_DATABASE();
-//        System.out.println(userQuery.get("updateUserQuery"));
-//        System.out.println(userQuery.get("updateAccountQuery"));
-//        System.out.println(MySQLQueryStrings.DELETE_USER_FROM_DATABASE);
-//        System.out.println(MySQLQueryStrings.GET_BALANCE_FROM_DATABASE);
-//        System.out.println(MySQLQueryStrings.WITHDRAW_FROM_ACCOUNT().get("updateWithdrawBalanceQuery"));
-//        System.out.println(MySQLQueryStrings.WITHDRAW_FROM_ACCOUNT().get("insertWithdrawalTransactionQuery"));
-//        System.out.println(MySQLQueryStrings.WITHDRAW_FROM_ACCOUNT().get("linkWithdrawalTransactionQuery"));
-//        System.out.println(MySQLQueryStrings.DEPOSIT_TO_ACCOUNT().get("updateDepositBalanceQuery"));
-//        System.out.println(MySQLQueryStrings.DEPOSIT_TO_ACCOUNT().get("insertDepositTransactionQuery"));
-//        System.out.println(MySQLQueryStrings.DEPOSIT_TO_ACCOUNT().get("linkDepositTransactionQuery"));
-//        System.out.println(MySQLQueryStrings.GET_USER_ROLE_FROM_DATABASE);
-//        System.out.println(MySQLQueryStrings.SEARCH_ACCOUNT_FROM_DATABASE);
-//        System.out.println(MySQLQueryStrings.GET_USERS_FROM_DATABASE);
-//        System.out.println(MySQLQueryStrings.GET_BALANCE_FROM_DATABASE);
-//        System.out.println(MySQLQueryStrings.GET_USER_BY_ACCOUNT_ID);
-//        System.out.println(MySQLQueryStrings.GET_USER_BY_LOGIN);
-//        System.out.println(MySQLQueryStrings.GET_USER_BY_ID);
-//        System.out.println(MySQLQueryStrings.GET_USER_ROLE_BY_LOGIN_AND_PIN);
-//        System.out.println(MySQLQueryStrings.SEARCH_USER_BY_ACCOUNT_ID);
-//        System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertQuery"));
-//        System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertAccountQuery"));
-//        System.out.println(MySQLQueryStrings.ADD_USER_TO_DATABASE(atmUser).get("insertRoleQuery"));
-//        System.out.println(MySQLQueryStrings.TRANSACTION_REPORT);
-//        System.out.println(MySQLQueryStrings.TRANSACTION_REPORT_BY_USER_ID);
-//
-//
-//    }
 
 }
