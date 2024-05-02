@@ -28,7 +28,6 @@ public class DataAccessLayer {
     }
 
 
-
     public List<ATMUser> getUsersFromDatabase() {
         List<ATMUser> userList = new ArrayList<>();
         String query = MySQLQueryStrings.GET_USERS_FROM_DATABASE;
@@ -77,7 +76,7 @@ public class DataAccessLayer {
                 int accountId = rs.getInt("accountId");
                 double amount = rs.getDouble("amount");
 
-                atmTransactions.add(new ATMTransaction(userId, userType, holder,   transactionId, transactionDate, transactionType, accountId, amount, roleDescription));
+                atmTransactions.add(new ATMTransaction(userId, userType, holder, transactionId, transactionDate, transactionType, accountId, amount, roleDescription));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,7 +88,7 @@ public class DataAccessLayer {
         String q1 = MySQLQueryStrings.GET_USER_BY_ACCOUNT_ID;
         ATMUser atmUser = null;
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            PreparedStatement stmtSelect = conn.prepareStatement(q1)){
+             PreparedStatement stmtSelect = conn.prepareStatement(q1)) {
             stmtSelect.setInt(1, accId);
 
             // Execute the SELECT statement
@@ -119,7 +118,7 @@ public class DataAccessLayer {
         String q1 = MySQLQueryStrings.GET_USER_BY_ID;
         ATMUser atmUser = null;
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            PreparedStatement stmtSelect = conn.prepareStatement(q1)){
+             PreparedStatement stmtSelect = conn.prepareStatement(q1)) {
             stmtSelect.setInt(1, userId);
 
             // Execute the SELECT statement
@@ -150,7 +149,7 @@ public class DataAccessLayer {
         String q1 = MySQLQueryStrings.TRANSACTION_REPORT_BY_USER_ID;
         ATMTransaction atmTransactionm = null;
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            PreparedStatement stmtSelect = conn.prepareStatement(q1)){
+             PreparedStatement stmtSelect = conn.prepareStatement(q1)) {
             stmtSelect.setInt(1, uId);
 
             // Execute the SELECT statement
@@ -166,7 +165,7 @@ public class DataAccessLayer {
                 int accountId = rs.getInt("accountId");
                 double amount = rs.getDouble("amount");
 
-                atmTransactionm = new ATMTransaction(userId, userType, holder,   transactionId, transactionDate, transactionType, accountId, amount, roleDescription);
+                atmTransactionm = new ATMTransaction(userId, userType, holder, transactionId, transactionDate, transactionType, accountId, amount, roleDescription);
             }
 
 
@@ -181,7 +180,7 @@ public class DataAccessLayer {
         String q1 = MySQLQueryStrings.GET_USER_BY_LOGIN;
         ATMUser atmUser = null;
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            PreparedStatement stmtSelect = conn.prepareStatement(q1)){
+             PreparedStatement stmtSelect = conn.prepareStatement(q1)) {
             stmtSelect.setString(1, uLogin);
 
             // Execute the SELECT statement
@@ -281,12 +280,12 @@ public class DataAccessLayer {
     }
 
     public boolean updateUserFromDatabase(ATMUser atmUser) {
-        HashMap<String, String> q1 = MySQLQueryStrings.UPDATE_USER_TO_DATABASE() ;
+        HashMap<String, String> q1 = MySQLQueryStrings.UPDATE_USER_TO_DATABASE();
         boolean updateOkay = false;
 
         try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
              PreparedStatement userStmt = conn.prepareStatement(q1.get("updateUserQuery"));
-             PreparedStatement accountStmt = conn.prepareStatement(q1.get("updateAccountQuery"),Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement accountStmt = conn.prepareStatement(q1.get("updateAccountQuery"), Statement.RETURN_GENERATED_KEYS)) {
 
             // Update user details
             userStmt.setString(1, atmUser.getUserLoginPin());
@@ -296,7 +295,7 @@ public class DataAccessLayer {
             int userUpdatedRows = userStmt.executeUpdate();
 
             // Update account status
-            accountStmt.setInt(1,atmUser.getActive());
+            accountStmt.setInt(1, atmUser.getActive());
             accountStmt.setInt(2, atmUser.getId());
             int accountUpdatedRows = accountStmt.executeUpdate();
 
@@ -363,7 +362,7 @@ public class DataAccessLayer {
 
     public void withdrawFromUser(int userId, double amount) {
         // Query to update user's balance for withdrawal
-         HashMap<String, String> queries = MySQLQueryStrings.WITHDRAW_FROM_ACCOUNT();
+        HashMap<String, String> queries = MySQLQueryStrings.WITHDRAW_FROM_ACCOUNT();
 
         double currentBalance = getBalanceFromUser(userId);
         try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
@@ -409,7 +408,7 @@ public class DataAccessLayer {
     }
 
     public void depositToUserAccount(int userId, double amount) {
-               // Query to update user's balance for deposit
+        // Query to update user's balance for deposit
         HashMap<String, String> queries = MySQLQueryStrings.DEPOSIT_TO_ACCOUNT();
         double currentBalance = getBalanceFromUser(userId);
         try (Connection conn = DriverManager.getConnection(this.dbUrl, this.dbUser, this.dbPassword);
@@ -445,8 +444,8 @@ public class DataAccessLayer {
         }
     }
 
-    public Map<String, Object> getRoleDescription(String userLogin, String userLoginPin){
-            // Check if user login pin is 5 characters long
+    public Map<String, Object> getRoleDescription(String userLogin, String userLoginPin) {
+        // Check if user login pin is 5 characters long
         if (userLoginPin.length() != 5) {
             System.out.println("Failed to log in. User login pin must be 5 characters long.");
             return null;
@@ -483,11 +482,11 @@ public class DataAccessLayer {
                 return null;
             }
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
+    }
 
     public void searchAccount(int accountId) {
         String searchAccountQuery = MySQLQueryStrings.SEARCH_USER_BY_ACCOUNT_ID;

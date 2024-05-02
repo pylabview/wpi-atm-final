@@ -4,11 +4,68 @@ import com.rodrigohacks.atm.model.ATMUser;
 
 import java.util.HashMap;
 
+/**
+ *
+ */
 public class MySQLQueryStrings {
     public static final String GET_USERS_FROM_DATABASE = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType  from users " +
             "join accounts on  users.id = accounts.user_id " +
             "join roles on users.id = roles.user_id ";
+    public static String DELETE_USER_FROM_DATABASE = "DELETE FROM users WHERE id = ?";
+    public static String GET_BALANCE_FROM_DATABASE = "SELECT accounts.balance, accounts.id AS account_number, users.holder, @now AS time_stamp " +
+            "FROM users " +
+            "JOIN accounts ON accounts.user_id = users.id " +
+            "WHERE users.id = ?";
+    public static String GET_USER_ROLE_FROM_DATABASE = "SELECT roles.role_description, users.id " +
+            "FROM users " +
+            "JOIN roles ON users.id = roles.user_id " +
+            "WHERE users.user_login = ? AND users.user_login_pin = ?";
+    public static String SEARCH_ACCOUNT_FROM_DATABASE = "SELECT users.holder, accounts.id " +
+            "FROM users " +
+            "JOIN accounts ON users.id = accounts.user_id " +
+            "WHERE accounts.id = ?";
+    public static String GET_USER_BY_ACCOUNT_ID = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
+            "from users " +
+            "join accounts " +
+            "on  users.id = accounts.user_id join roles on users.id = roles.user_id " +
+            "where accounts.id = ?";
+    public static String GET_USER_BY_LOGIN = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
+            "from users " +
+            "join accounts " +
+            "on  users.id = accounts.user_id join roles on users.id = roles.user_id " +
+            "where users.user_login = ?";
+    public static String GET_USER_BY_ID = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
+            "from users " +
+            "join accounts " +
+            "on  users.id = accounts.user_id join roles on users.id = roles.user_id " +
+            "where users.id = ?";
+    public static String GET_USER_ROLE_BY_LOGIN_AND_PIN = "SELECT roles.role_description, users.id " +
+            "FROM users " +
+            "JOIN roles ON users.id = roles.user_id " +
+            "WHERE users.user_login = ? AND users.user_login_pin = ?";
+    public static String SEARCH_USER_BY_ACCOUNT_ID = "SELECT users.holder, accounts.id " +
+            "FROM users " +
+            "JOIN accounts ON users.id = accounts.user_id " +
+            "WHERE accounts.id = ?";
+    public static String TRANSACTION_REPORT = """
+            SELECT users.id as userId,users.user_type as userType, roles.role_description as roleDescription, users.holder, transactions.id as trasactionId, transactions.created_at as transactionDate, transactions.type as transactionType, transactions.amount, accounts.id as accountId
+            FROM users_transactions
+            JOIN users ON users_transactions.user_id = users.id
+            JOIN transactions ON users_transactions.transaction_id = transactions.id
+            JOIN roles ON users.id = roles.user_id
+            JOIN accounts ON users.id = accounts.user_id""";
+    public static String TRANSACTION_REPORT_BY_USER_ID = """
+            SELECT users.id as userId,users.user_type as userType, roles.role_description as roleDescription, users.holder, transactions.id as trasactionId, transactions.created_at as transactionDate, transactions.type as transactionType, transactions.amount, accounts.id as accountId
+            FROM users_transactions
+            JOIN users ON users_transactions.user_id = users.id
+            JOIN transactions ON users_transactions.transaction_id = transactions.id
+            JOIN roles ON users.id = roles.user_id
+            JOIN accounts ON users.id = accounts.user_id
+            WHERE users.id = ?;""";
 
+    /**
+     * @return
+     */
     public static HashMap<String, String> UPDATE_USER_TO_DATABASE() {
         HashMap<String, String> updateUserQueryStrings = new HashMap<>();
         updateUserQueryStrings.put("updateUserQuery", "UPDATE users SET user_login_pin = ?, user_login = ?, holder = ? WHERE id = ?");
@@ -17,6 +74,10 @@ public class MySQLQueryStrings {
         return updateUserQueryStrings;
     }
 
+    /**
+     * @param atmUser
+     * @return
+     */
     public static HashMap<String, String> ADD_USER_TO_DATABASE(ATMUser atmUser) {
         HashMap<String, String> newUserQueryStrings = new HashMap<>();
         newUserQueryStrings.put("insertQuery", """ 
@@ -29,17 +90,8 @@ public class MySQLQueryStrings {
                 INSERT INTO roles (role_description, user_id)
                 VALUES ("%s", %d);""".formatted(atmUser.getRoleDescription(), atmUser.getId()));
 
-    return newUserQueryStrings;
+        return newUserQueryStrings;
     }
-
-
-    public static String DELETE_USER_FROM_DATABASE = "DELETE FROM users WHERE id = ?";
-
-    public static String GET_BALANCE_FROM_DATABASE = "SELECT accounts.balance, accounts.id AS account_number, users.holder, @now AS time_stamp " +
-            "FROM users " +
-            "JOIN accounts ON accounts.user_id = users.id " +
-            "WHERE users.id = ?";
-
 
     public static HashMap<String, String> WITHDRAW_FROM_ACCOUNT() {
         HashMap<String, String> withdrawFromAccount = new HashMap<>();
@@ -58,62 +110,6 @@ public class MySQLQueryStrings {
 
         return depositToAccount;
     }
-
-
-    public static String GET_USER_ROLE_FROM_DATABASE = "SELECT roles.role_description, users.id " +
-            "FROM users " +
-            "JOIN roles ON users.id = roles.user_id " +
-            "WHERE users.user_login = ? AND users.user_login_pin = ?";
-
-    public static String SEARCH_ACCOUNT_FROM_DATABASE = "SELECT users.holder, accounts.id " +
-            "FROM users " +
-            "JOIN accounts ON users.id = accounts.user_id " +
-            "WHERE accounts.id = ?";
-
-
-    public static String GET_USER_BY_ACCOUNT_ID = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
-                                                   "from users " +
-                                                   "join accounts " +
-                                                   "on  users.id = accounts.user_id join roles on users.id = roles.user_id " +
-                                                   "where accounts.id = ?";
-
-    public static String GET_USER_BY_LOGIN = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
-                                             "from users " +
-                                             "join accounts " +
-                                             "on  users.id = accounts.user_id join roles on users.id = roles.user_id "  +
-                                             "where users.user_login = ?";
-
-    public static String GET_USER_BY_ID = "select users.id, users.holder, users.user_login, users.user_login_pin, roles.role_description, accounts.active, accounts.balance, accounts.id as accountId, users.user_type as userType " +
-                                         "from users " +
-                                         "join accounts " +
-                                         "on  users.id = accounts.user_id join roles on users.id = roles.user_id "  +
-                                         "where users.id = ?";
-
-    public static String GET_USER_ROLE_BY_LOGIN_AND_PIN = "SELECT roles.role_description, users.id " +
-                             "FROM users " +
-                             "JOIN roles ON users.id = roles.user_id " +
-                             "WHERE users.user_login = ? AND users.user_login_pin = ?";
-
-    public static String SEARCH_USER_BY_ACCOUNT_ID =    "SELECT users.holder, accounts.id " +
-                                                        "FROM users " +
-                                                        "JOIN accounts ON users.id = accounts.user_id " +
-                                                        "WHERE accounts.id = ?";
-    public static String TRANSACTION_REPORT = """
-                                                SELECT users.id as userId,users.user_type as userType, roles.role_description as roleDescription, users.holder, transactions.id as trasactionId, transactions.created_at as transactionDate, transactions.type as transactionType, transactions.amount, accounts.id as accountId
-                                                FROM users_transactions
-                                                JOIN users ON users_transactions.user_id = users.id
-                                                JOIN transactions ON users_transactions.transaction_id = transactions.id
-                                                JOIN roles ON users.id = roles.user_id
-                                                JOIN accounts ON users.id = accounts.user_id""";
-
-    public static String TRANSACTION_REPORT_BY_USER_ID = """
-                                               SELECT users.id as userId,users.user_type as userType, roles.role_description as roleDescription, users.holder, transactions.id as trasactionId, transactions.created_at as transactionDate, transactions.type as transactionType, transactions.amount, accounts.id as accountId
-                                               FROM users_transactions
-                                               JOIN users ON users_transactions.user_id = users.id
-                                               JOIN transactions ON users_transactions.transaction_id = transactions.id
-                                               JOIN roles ON users.id = roles.user_id
-                                               JOIN accounts ON users.id = accounts.user_id
-                                               WHERE users.id = ?;""";
 
 
 }

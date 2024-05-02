@@ -9,6 +9,7 @@ public class ATMPresentationLayer {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     int currentUserId = 0;
     int adminUserId = 0;
+
     public void startApplication() {
         Scanner scanner = new Scanner(System.in);
 
@@ -28,7 +29,7 @@ public class ATMPresentationLayer {
             System.out.println("Role Description: " + roleDescription);
             System.out.println("User ID: " + currentUserId);
 
- // Display appropriate menu based on user's role
+            // Display appropriate menu based on user's role
             if (roleDescription.equalsIgnoreCase("Admin")) {
                 adminUserId = currentUserId;
                 displayAdminMenu();
@@ -142,7 +143,7 @@ public class ATMPresentationLayer {
         System.out.print("Enter the account number to search: ");
         int accountNumber = scanner.nextInt();
         dataAccessLayer.searchAccount(accountNumber);
-    // Display the retrieved account information
+        // Display the retrieved account information
     }
 
     private void updateAccountInformation() {
@@ -153,7 +154,7 @@ public class ATMPresentationLayer {
         System.out.print("Enter the User account number to update: ");
         int accountId = Integer.parseInt(scanner.nextLine());
         ATMUser atmU = dataAccessLayer.getUserByAccountId(accountId);
-        System.out.println("----> userId: " +atmU.getId());
+        System.out.println("----> userId: " + atmU.getId());
         System.out.print("Login: ");
         String userLogin = scanner.nextLine();
         System.out.print("Pin Code: ");
@@ -176,7 +177,7 @@ public class ATMPresentationLayer {
         // Call the appropriate method from UserDetails class to update the account information
         // Display appropriate message after updating the account information
         System.out.println("Account information updated successfully.");
-        }
+    }
 
     private void deleteExistingAccount() {
         Scanner scanner = new Scanner(System.in);
@@ -187,14 +188,14 @@ public class ATMPresentationLayer {
         int userAccountNumber = scanner.nextInt();
         ATMUser atmU = dataAccessLayer.getUserByAccountId(userAccountNumber);
         System.out.println("You wish to delete the account held by John Doe. If this information is correct, please\n" +
-                            "re-enter the account number: " + userAccountNumber);
+                "re-enter the account number: " + userAccountNumber);
         int reenterUserAccountNumber = scanner.nextInt();
         // Perform the necessary actions to delete the account
         // Call the appropriate method from UserDetails class to delete the account
-        if(userAccountNumber==reenterUserAccountNumber){
+        if (userAccountNumber == reenterUserAccountNumber) {
             dataAccessLayer.deleteUserFromDatabase(atmU.getId());
-        }else{
-            System.out.println("Account # "+ userAccountNumber +" deletion is aborted");
+        } else {
+            System.out.println("Account # " + userAccountNumber + " deletion is aborted");
         }
     }
 
@@ -217,7 +218,7 @@ public class ATMPresentationLayer {
         ATMUser atmUser = new ATMUser(1,
                 holder,
                 "Customer",
-                 userLogin,
+                userLogin,
                 userLoginPin,
                 Double.valueOf(startingBalance),
                 active,
