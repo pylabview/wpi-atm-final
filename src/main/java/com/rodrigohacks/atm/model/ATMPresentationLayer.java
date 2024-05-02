@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class ATMPresentationLayer {
     DataAccessLayer dataAccessLayer = new DataAccessLayer();
     int currentUserId = 0;
+    int adminUserId = 0;
     public void startApplication() {
         Scanner scanner = new Scanner(System.in);
 
@@ -29,6 +30,7 @@ public class ATMPresentationLayer {
 
  // Display appropriate menu based on user's role
             if (roleDescription.equalsIgnoreCase("Admin")) {
+                adminUserId = currentUserId;
                 displayAdminMenu();
             } else {
                 displayCustomerMenu();
@@ -150,6 +152,8 @@ public class ATMPresentationLayer {
         // Input account number to update
         System.out.print("Enter the User account number to update: ");
         int accountId = Integer.parseInt(scanner.nextLine());
+        ATMUser atmU = dataAccessLayer.getUserByAccountId(accountId);
+        System.out.println("----> userId: " +atmU.getId());
         System.out.print("Login: ");
         String userLogin = scanner.nextLine();
         System.out.print("Pin Code: ");
@@ -158,7 +162,7 @@ public class ATMPresentationLayer {
         String holder = scanner.nextLine();
         System.out.print("Status (Active - [1] /Inactive - [0]): ");
         int active = Integer.parseInt(scanner.next());
-         ATMUser atmUserUpdated = new ATMUser(currentUserId,
+        ATMUser atmUserUpdated = new ATMUser(atmU.getId(),
                 holder,
                 "Customer",
                 userLogin,
